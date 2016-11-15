@@ -1,4 +1,5 @@
 #lang racket
+(define ns (make-base-namespace))
 #|
 Proyecto 2 Paradigmas de Programación.
 Generador de funciones por medio de algoritmo genético.
@@ -11,7 +12,7 @@ Estudiantes:
 
 ;***********************DEFINICIONES*******************************
 (define operadores '(+ * - / expt))
-(define operandos '(a b x y))
+(define operandos '(x y))
 ;Operadores y operandos básicos utilizados por el generador.
 ;******************************************************************
 
@@ -31,6 +32,26 @@ Estudiantes:
 ;******************************************************************
 
 ;------------------------------------------------------------------
+;Generador de valores de entrada a la funcion
+
+(define q
+  (lambda (f L)
+    (map 
+     (lambda (p)
+       (list p (f (car p) (cadr p))))
+     L)
+    ))
+
+;**********Funcion de ejemplo**********
+(define f
+  (λ (x y)
+    (+ (* (expt x 2) (- 1 y))
+       (/ (* 4 (expt y x)) (+ 3 (* 2 y)))
+       )
+    )
+  )
+
+;**************************************
 
 ;**********************PRUEBAS******************************
 ;(elemento operadores)
@@ -41,3 +62,6 @@ Estudiantes:
 ;(generador 2 3)
 ;******************************************************************
 
+(generador 2 2)
+(q f '((1 1) (1 2) (2 2) (1 3)))
+((eval (car (generador 2 2)) ns) 1 1)
