@@ -12,7 +12,7 @@ Estudiantes:
 
 ;***********************DEFINICIONES*******************************
 (define operadores '(+ * - / expt))
-(define operandos '(x y))
+(define operandos '(x y a b))
 ;Operadores y operandos básicos utilizados por el generador.
 ;******************************************************************
 
@@ -27,7 +27,7 @@ Estudiantes:
 ;Generador base de expresiones aritméticas (polinomios).
 
 (define generador (lambda (n p)	(if (zero? n) empty
-			(cons (list 'λ '(x y) (expresion p)) (generador (- n 1) p)) )))
+			(cons (list 'λ '(x y a b) (expresion p)) (generador (- n 1) p)) )))
 ;Generador base de funciones aritméticas y potencia.
 ;******************************************************************
 
@@ -53,6 +53,18 @@ Estudiantes:
 
 ;**************************************
 
+;**********Fitness function**********
+
+(define fitness
+  (λ (L1 L2)
+    (cond
+      [(or (null? L1) (null? L2)) '()]
+      [(and (null? (cdr L1)) (null? (cdr L2))) (expt (- (car L2) (car L1)) 2)]
+      [(+ (expt (- (car L2) (car L1)) 2) (fitness (cdr L1) (cdr L2)))]
+        )
+    )
+  )
+
 ;**********************PRUEBAS******************************
 ;(elemento operadores)
 ;(elemento operando)
@@ -62,6 +74,10 @@ Estudiantes:
 ;(generador 2 3)
 ;******************************************************************
 
-(generador 2 2)
-(q f '((1 1) (1 2) (2 2) (1 3)))
-((eval (car (generador 2 2)) ns) 1 1)
+;(generador 2 2)
+;(q f '((1 1) (1 2) (2 2) (1 3)))
+;((eval (car (generador 2 2)) ns) 1 1 (random) (random))
+
+(define l1 (list 3 4 7 6))
+(define l2 (list 3 3 6 6))
+(fitness l1 l2)
